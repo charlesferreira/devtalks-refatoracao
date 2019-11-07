@@ -15,7 +15,7 @@ export default class AtendimentoController {
     // valida a pessoa: se informou interessado,
     // deve preencher todos os campos obrigatórios
     if (
-      atendimento.interessado !== null &&
+      !atendimento.isAnonimo &&
       (atendimento.interessado.nomeDaMae === null ||
         atendimento.interessado.nomeDaMae === null ||
         atendimento.interessado.dataDeNascimento === null)
@@ -33,10 +33,10 @@ export default class AtendimentoController {
       const dateDiff = Date.now() - atendimento.dataOcorrencia.getTime();
       const numDiasOcorrencia = dateDiff / 1000 / 3600 / 24;
       if (
-        (atendimento.interessado === null && numDiasOcorrencia <= 90) ||
-        (atendimento.interessado !== null && numDiasOcorrencia <= 180)
+        numDiasOcorrencia > 180 ||
+        (atendimento.isAnonimo && numDiasOcorrencia > 90)
       ) {
-        this.mensagemService.erro('[pessoa] campos obrigatórios');
+        this.mensagemService.erro('[pessoa] prazo expirado');
         return;
       }
 
