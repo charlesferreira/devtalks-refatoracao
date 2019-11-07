@@ -16,9 +16,9 @@ export default class AtendimentoController {
     // deve preencher todos os campos obrigatórios
     if (
       !atendimento.isAnonimo &&
-      (atendimento.interessado.nomeDaMae === null ||
-        atendimento.interessado.nomeDaMae === null ||
-        atendimento.interessado.dataDeNascimento === null)
+      (atendimento.getInteressado().getNomeDaMae() === null ||
+        atendimento.getInteressado().getNomeDaMae() === null ||
+        atendimento.getInteressado().getDataDeNascimento() === null)
     ) {
       this.mensagemService.erro('[pessoa] campos obrigatórios');
       return;
@@ -26,11 +26,11 @@ export default class AtendimentoController {
 
     // se tem todos os dados obrigatórios, valida
     // se a pessoa ainda não existe no banco
-    if (this.pessoaService.validarDadosPessoa(atendimento.interessado)) {
+    if (this.pessoaService.validarDadosPessoa(atendimento.getInteressado())) {
       // valida o atendimento: se for anônimo e tiver mais de 90 dias
       // corridos desde a ocorrência, ou se não for anônimo e tiver
       // mais de 180 dias desde a ocorrência, exibe mensagem de erro
-      const dateDiff = Date.now() - atendimento.dataOcorrencia.getTime();
+      const dateDiff = Date.now() - atendimento.getDataOcorrencia().getTime();
       const numDiasOcorrencia = dateDiff / 1000 / 3600 / 24;
       if (
         numDiasOcorrencia > 180 ||
@@ -41,7 +41,7 @@ export default class AtendimentoController {
       }
 
       // grava a pessoa
-      this.pessoaService.gravarPessoa(atendimento.interessado);
+      this.pessoaService.gravarPessoa(atendimento.getInteressado());
 
       // grava o atendimento
       this.atendimentoService.gravarAtendimento(atendimento);
