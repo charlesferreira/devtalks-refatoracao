@@ -14,12 +14,7 @@ export default class AtendimentoController {
   cadastrar(atendimento: Atendimento) {
     // valida a pessoa: se informou interessado,
     // deve preencher todos os campos obrigatórios
-    if (
-      !atendimento.isAnonimo &&
-      (atendimento.getInteressado().getNomeDaMae() === null ||
-        atendimento.getInteressado().getNomeDaMae() === null ||
-        atendimento.getInteressado().getDataDeNascimento() === null)
-    ) {
+    if (!atendimento.isAnonimo && atendimento.getInteressado().validar()) {
       this.mensagemService.erro('[pessoa] campos obrigatórios');
       return;
     }

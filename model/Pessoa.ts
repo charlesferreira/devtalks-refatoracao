@@ -1,10 +1,18 @@
 export default class Pessoa {
-  private nomePessoa?: string;
+  private nome?: string;
   private nomeDaMae?: string;
   private dataDeNascimento?: Date;
 
-  getNomePessoa(): string {
-    return this.nomePessoa;
+  validar(): boolean {
+    return (
+      this.getNome() !== null &&
+      this.getNomeDaMae() !== null &&
+      this.getDataDeNascimento() !== null
+    );
+  }
+
+  getNome(): string {
+    return this.nome;
   }
 
   getNomeDaMae(): string {
