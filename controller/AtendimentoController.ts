@@ -25,12 +25,7 @@ export default class AtendimentoController {
       // valida o atendimento: se for anônimo e tiver mais de 90 dias
       // corridos desde a ocorrência, ou se não for anônimo e tiver
       // mais de 180 dias desde a ocorrência, exibe mensagem de erro
-      const dateDiff = Date.now() - atendimento.getDataOcorrencia().getTime();
-      const numDiasOcorrencia = dateDiff / 1000 / 3600 / 24;
-      if (
-        numDiasOcorrencia > 180 ||
-        (atendimento.isAnonimo && numDiasOcorrencia > 90)
-      ) {
+      if (atendimento.prazoExpirado()) {
         this.mensagemService.erro('[pessoa] prazo expirado');
         return;
       }
