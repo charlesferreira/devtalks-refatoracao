@@ -21,23 +21,26 @@ export default class AtendimentoController {
 
     // se tem todos os dados obrigatórios, valida
     // se a pessoa ainda não existe no banco
-    if (this.pessoaService.validarDadosPessoa(atendimento.getInteressado())) {
-      // valida o atendimento: se for anônimo e tiver mais de 90 dias
-      // corridos desde a ocorrência, ou se não for anônimo e tiver
-      // mais de 180 dias desde a ocorrência, exibe mensagem de erro
-      if (atendimento.prazoExpirado()) {
-        this.mensagemService.erro('[pessoa] prazo expirado');
-        return;
-      }
-
-      // grava a pessoa
-      this.pessoaService.gravarPessoa(atendimento.getInteressado());
-
-      // grava o atendimento
-      this.atendimentoService.gravarAtendimento(atendimento);
-
-      // retorna com uma mensagem de sucesso
-      this.mensagemService.sucesso('Atendimento cadastrado!');
+    if (this.pessoaService.pessoaJaCadastrada(atendimento.getInteressado())) {
+      this.mensagemService.erro('[pessoa] pessoa já cadastrada');
+      return;
     }
+
+    // valida o atendimento: se for anônimo e tiver mais de 90 dias
+    // corridos desde a ocorrência, ou se não for anônimo e tiver
+    // mais de 180 dias desde a ocorrência, exibe mensagem de erro
+    if (atendimento.prazoExpirado()) {
+      this.mensagemService.erro('[pessoa] prazo expirado');
+      return;
+    }
+
+    // grava a pessoa
+    this.pessoaService.gravarPessoa(atendimento.getInteressado());
+
+    // grava o atendimento
+    this.atendimentoService.gravarAtendimento(atendimento);
+
+    // retorna com uma mensagem de sucesso
+    this.mensagemService.sucesso('Atendimento cadastrado!');
   }
 }
