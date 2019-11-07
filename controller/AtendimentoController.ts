@@ -2,17 +2,19 @@ import Atendimento from '../model/Atendimento';
 import AtendimentoService from '../service/AtendimentoService';
 import PessoaService from '../service/PessoaService';
 import MensagemService from '../service/MensagemService';
+import AtendimentoValidator from '../validation/AtendimentoValidator';
 
 export default class AtendimentoController {
   constructor(
-    private pessoaService: PessoaService,
     private atendimentoService: AtendimentoService,
+    private atendimentoValidator: AtendimentoValidator,
     private mensagemService: MensagemService
   ) {}
 
   // cadastra um atendimento
   cadastrar(atendimento: Atendimento) {
-    if (!this.validar(atendimento)) {
+    if (!this.atendimentoValidator.validar(atendimento)) {
+      this.mensagemService.erro(this.atendimentoValidator.getErro());
       return;
     }
 
@@ -21,31 +23,5 @@ export default class AtendimentoController {
 
     // retorna com uma mensagem de sucesso
     this.mensagemService.sucesso('Atendimento cadastrado!');
-  }
-
-  validar(atendimento: Atendimento): boolean {
-    // valida a pessoa: se informou interessado,
-    // deve preencher todos os campos obrigatórios
-    if (!atendimento.isAnonimo && atendimento.getInteressado().validar()) {
-      this.mensagemService.erro('[pessoa] campos obrigatórios');
-      return false;
-    }
-
-    // se tem todos os dados obrigatórios, valida
-    // se a pessoa ainda não existe no banco
-    if (this.pessoaService.pessoaJaCadastrada(atendimento.getInteressado())) {
-      this.mensagemService.erro('[pessoa] pessoa já cadastrada');
-      return false;
-    }
-
-    // valida o atendimento: se for anônimo e tiver mais de 90 dias
-    // corridos desde a ocorrência, ou se não for anônimo e tiver
-    // mais de 180 dias desde a ocorrência, exibe mensagem de erro
-    if (atendimento.prazoExpirado()) {
-      this.mensagemService.erro('[pessoa] prazo expirado');
-      return false;
-    }
-
-    return true;
   }
 }
