@@ -4,11 +4,7 @@ export default class PessoaService {
   gravarPessoa(interessado: Pessoa) {
     throw new Error('Method not implemented.');
   }
-  validarDadosPessoa(
-    nomePessoa: string,
-    nomeDaMae: string,
-    dataDeNascimento: Date
-  ): boolean {
+  validarDadosPessoa(pessoa: Pessoa): boolean {
     throw new Error('Method not implemented.');
   }
 }

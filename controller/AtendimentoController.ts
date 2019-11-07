@@ -26,13 +26,7 @@ export default class AtendimentoController {
 
     // se tem todos os dados obrigatórios, valida
     // se a pessoa ainda não existe no banco
-    if (
-      this.pessoaService.validarDadosPessoa(
-        atendimento.interessado.nomePessoa,
-        atendimento.interessado.nomeDaMae,
-        atendimento.interessado.dataDeNascimento
-      )
-    ) {
+    if (this.pessoaService.validarDadosPessoa(atendimento.interessado)) {
       // valida o atendimento: se for anônimo e tiver mais de 90 dias
       // corridos desde a ocorrência, ou se não for anônimo e tiver
       // mais de 180 dias desde a ocorrência, exibe mensagem de erro
