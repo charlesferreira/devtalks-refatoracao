@@ -11,7 +11,7 @@ export default class AtendimentoController {
   ) {}
 
   // cadastra um atendimento
-  criar(atendimento: Atendimento) {
+  cadastrar(atendimento: Atendimento) {
     // valida a pessoa: se informou interessado,
     // deve preencher todos os campos obrigatórios
     if (
