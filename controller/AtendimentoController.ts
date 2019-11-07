@@ -16,9 +16,6 @@ export default class AtendimentoController {
       return;
     }
 
-    // grava a pessoa
-    this.pessoaService.gravarPessoa(atendimento.getInteressado());
-
     // grava o atendimento
     this.atendimentoService.gravarAtendimento(atendimento);
 
